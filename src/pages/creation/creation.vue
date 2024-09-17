@@ -153,6 +153,7 @@ export default {
         return;
       }
       await uploadPromise.value;
+      console.log('开始发送请求，生成AI图片');
       uni.request({
         url: ApiCreateImageUrl,
         method: 'POST',

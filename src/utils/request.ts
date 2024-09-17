@@ -8,7 +8,7 @@ const requestTryonHistory = async (userId: string) => {
       'Content-Type': 'application/json'
     },
     data: {
-      user_id: 'xxxxxxx',
+      user_id: userId,
     },
   });
   return (resp.data as Record<string, any>).try_on_list.map((item: any) => {

@@ -5,6 +5,7 @@
       <view class="image-list">
         <view v-for="(image, imgIndex) in group.images" :key="imgIndex" class="image-item">
           <image class="image" :src="image.generation_image_url" mode="aspectFit" />
+          <span class="image-missing" v-if="!image.generation_image_url">处理中</span>
         </view>
       </view>
     </view>
@@ -13,8 +14,9 @@
 
 <script lang="ts">
 import { requestTryonHistory } from '@/utils/request';
-import { inject, ref, onMounted, onBeforeMount } from 'vue';
+import { inject, ref, onBeforeMount } from 'vue';
 import type { Ref } from 'vue'
+import { onShow} from '@dcloudio/uni-app';
 import { UserInfo } from '@/typing.ts';
 
 type ImageItem = {
@@ -28,22 +30,13 @@ type ImageGroup = {
 
 export default {
   setup() {
-    const images = ref<ImageItem[]>([
-      // { date: '2022-01-01', generation_image_url: 'https://res.cloudinary.com/dsiza0wtm/image/upload/v1725063065/clothing1_oj22tq.jpg' },
-      // { date: '2022-01-01', generation_image_url: 'https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/image.png' },
-      // { date: '2022-01-01', generation_image_url: 'https://res.cloudinary.com/dsiza0wtm/image/upload/v1725063065/clothing1_oj22tq.jpg' },
-      // { date: '2022-01-01', generation_image_url: 'https://res.cloudinary.com/dsiza0wtm/image/upload/v1725063065/clothing1_oj22tq.jpg' },
-      // { date: '2022-01-02', generation_image_url: 'https://res.cloudinary.com/dsiza0wtm/image/upload/v1725063065/clothing1_oj22tq.jpg' },
-      // { date: '2022-01-02', generation_image_url: 'https://res.cloudinary.com/dsiza0wtm/image/upload/v1725063065/clothing1_oj22tq.jpg' },
-      // { date: '2022-01-03', generation_image_url: 'https://res.cloudinary.com/dsiza0wtm/image/upload/v1725063065/clothing1_oj22tq.jpg' },
-    ]);
-
     const groupedImages = ref<ImageGroup[]>([]);
     const userInfo = inject<Ref<UserInfo>>('userInfo')!;
 
-    const groupImages = () => {
+    const fetchImages = async () => {
+      const historyData = await requestTryonHistory(userInfo.value.openid);
       const grouped: {[date in string]: ImageItem[]} = {};
-      images.value.forEach(image => {
+      historyData.forEach((image: any) => {
         if (!grouped[image.date]) {
           grouped[image.date] = [];
         }
@@ -56,24 +49,25 @@ export default {
       console.log('groupImages: ', groupedImages.value);
     };
 
-    onMounted(async () => {
-      const historyData = await requestTryonHistory(userInfo.value.openid);
-      images.value = historyData;
-      groupImages();
+    onShow(() => {
+      fetchImages();
     });
 
-    onBeforeMount(async () => {
+    onBeforeMount(() => {
+      setInterval(async () => {
+        fetchImages();
+      }, 30 * 1000);
+      fetchImages();
     });
 
     return {
-      images,
       groupedImages,
     };
-  },
+  }
 };
 </script>
 
-<style>
+<style lang="scss">
 .container {
   padding: 10px;
 }
@@ -91,13 +85,22 @@ export default {
   justify-content: flex-start;
 }
 .image-item {
-  width: 210rpx;
-  padding: 5px;
-}
-image {
-  width: 100%;
-  background-color: #eee;
-  object-fit: cover;
+  position: relative;
+  padding: 5rpx;
+  image {
+    width: 220rpx;
+    height: 330rpx;
+    background-color: #eee;
+    object-fit: cover;
+  }
+  .image-missing {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #aaa;
+    font-size: 28rpx;
+  }
 }
 </style>
 
