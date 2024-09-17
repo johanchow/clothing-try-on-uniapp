@@ -1,0 +1,59 @@
+{
+	"pages": [
+    {
+      "path": "pages/creation/creation",
+      "style": {
+        "navigationBarTitleText": "试穿成图"
+      }
+    },
+    {
+      "path": "pages/history/history",
+      "style": {
+        "navigationBarTitleText": "创作历史"
+      }
+    },
+    {
+      "path": "pages/profile/profile",
+      "style": {
+        "navigationBarTitleText": "个人中心"
+      }
+    },
+    {
+      "path": "pages/login/login",
+      "style": {
+        "navigationBarTitleText": "授权登录"
+      }
+    }
+	],
+  "tabBar": {
+    "color": "#999",
+    "selectedColor": "#007AFF",
+    "backgroundColor": "#FFFFFF",
+    "list": [
+      {
+        "pagePath": "pages/creation/creation",
+        "iconPath": "static/images/profile.jpg",
+        "selectedIconPath": "static/images/profile.jpg",
+        "text": "试穿"
+      },
+      {
+        "pagePath": "pages/history/history",
+        "iconPath": "static/images/profile.jpg",
+        "selectedIconPath": "static/images/profile.jpg",
+        "text": "历史图"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "iconPath": "static/images/profile.jpg",
+        "selectedIconPath": "static/images/profile.jpg",
+        "text": "个人中心"
+      }
+    ]
+  },
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "uni-app",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	}
+}
