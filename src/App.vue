@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, provide } from "vue";
 import { onLaunch, onShow, onHide } from "@dcloudio/uni-app";
-import { UserInfo } from "./typing";
+import type { UserInfo } from "./typing.d.ts";
 
 const userInfoRef = ref<UserInfo>({
   nickName: '',

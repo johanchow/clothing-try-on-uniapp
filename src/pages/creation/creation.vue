@@ -45,7 +45,7 @@
           <radio-group @change="handleViewChange">
             <view class="radio-buttons">
               <label class="radio radio-button" :class="{'checked': selectedView === 'full-body'}">
-                <radio value="full-body" checked="true" />全身照
+                <radio value="full-body" />全身照
               </label>
               <label class="radio radio-button" :class="{'checked': selectedView === 'upper-body'}">
                 <radio value="upper-body" />上身照
@@ -60,9 +60,15 @@
           <label class="radio-label">风格</label>
           <radio-group @change="handleStyleChange">
             <view class="radio-buttons">
-              <label class="radio radio-button"><radio value="urban" />都市风</label>
-              <label class="radio radio-button"><radio value="scenery" checked="true" />自然</label>
-              <label class="radio radio-button"><radio value="cartoon" />摆拍</label>
+              <label class="radio radio-button" :class="{'checked': selectedStyle === 'urban'}">
+                <radio value="urban" />都市风
+              </label>
+              <label class="radio radio-button" :class="{'checked': selectedStyle === 'scenery'}">
+                <radio value="scenery" />自然景
+              </label>
+              <label class="radio radio-button" :class="{'checked': selectedStyle === 'cartoon'}">
+                <radio value="cartoon" />卡通
+              </label>
             </view>
           </radio-group>
         </view>
@@ -80,7 +86,7 @@
 import { inject, onBeforeMount, ref } from 'vue';
 import type { Ref } from 'vue'
 import { ApiCreateImageUrl, ApiUploadImageUrl } from '@/config';
-import { UserInfo } from '@/typing.ts';
+import type { UserInfo } from '@/typing.d.ts';
 
 export default {
   setup() {
@@ -90,10 +96,10 @@ export default {
     const uploadPromise = ref<Promise<number> | undefined>(undefined);
 
     // 记录用户选择
-    const selectedSex = ref('female');
-    const selectedAge = ref('junior');
-    const selectedView = ref('');
-    const selectedStyle = ref('');
+    const selectedSex = ref<string>('female');
+    const selectedAge = ref<string>('junior');
+    const selectedView = ref<string>('full-body');
+    const selectedStyle = ref<string>('');
 
     const userInfo = inject<Ref<UserInfo>>('userInfo')!;
 

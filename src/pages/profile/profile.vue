@@ -18,7 +18,7 @@
 import { inject, ref } from 'vue'
 import type { Ref } from 'vue'
 
-import { UserInfo } from '@/typing.ts';
+import type { UserInfo } from '@/typing.d.ts';
 export default {
   setup() {
     const userInfo = inject<Ref<UserInfo>>('userInfo')!;

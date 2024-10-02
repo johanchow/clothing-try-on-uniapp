@@ -10,8 +10,8 @@
 <script setup lang="ts">
 import { inject, ref, onBeforeMount } from 'vue'
 import type { Ref } from 'vue'
-import { UserInfo } from '@/typing.ts';
 import { ApiHost } from '@/config';
+import type { UserInfo } from '@/typing.d.ts';
 
 const hasAuth = ref(false);
 const userInfoRef = inject<Ref<UserInfo>>('userInfo')!;
