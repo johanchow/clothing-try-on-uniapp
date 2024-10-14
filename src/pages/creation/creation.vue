@@ -57,17 +57,17 @@
           </radio-group>
         </view>
         <view>
-          <label class="radio-label">风格</label>
+          <label class="radio-label">背景</label>
           <radio-group @change="handleStyleChange">
             <view class="radio-buttons">
+              <label class="radio radio-button" :class="{'checked': selectedStyle === 'pure'}">
+                <radio value="pure" />纯色
+              </label>
               <label class="radio radio-button" :class="{'checked': selectedStyle === 'urban'}">
-                <radio value="urban" />都市风
+                <radio value="urban" />街景
               </label>
               <label class="radio radio-button" :class="{'checked': selectedStyle === 'scenery'}">
                 <radio value="scenery" />自然景
-              </label>
-              <label class="radio radio-button" :class="{'checked': selectedStyle === 'cartoon'}">
-                <radio value="cartoon" />卡通
               </label>
             </view>
           </radio-group>
@@ -99,7 +99,7 @@ export default {
     const selectedSex = ref<string>('female');
     const selectedAge = ref<string>('junior');
     const selectedView = ref<string>('full-body');
-    const selectedStyle = ref<string>('');
+    const selectedStyle = ref<string>('pure');
 
     const userInfo = inject<Ref<UserInfo>>('userInfo')!;
 

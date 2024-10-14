@@ -29,7 +29,7 @@
 import { onHide, onShow } from '@dcloudio/uni-app';
 import { requestTryonHistory } from '@/utils/request';
 import { computed, inject, ref, onBeforeMount, watch } from 'vue';
-import { ApiHost } from '@/config';
+import { DiyImageUrl } from '@/config';
 import type { Ref } from 'vue'
 import type { UserInfo } from '@/typing.d.ts';
 
@@ -52,7 +52,7 @@ export default {
     const isEditingImage = ref<boolean>(false);
     const webviewUrl = computed(() => {
       console.log('webview computed previewImage.value: ', previewImage.value);
-      return `${ApiHost}/static/diy-image?generation_id=${previewImage.value?.id}`;
+      return `${DiyImageUrl}?generation_id=${previewImage.value?.id}`;
     });
 
     watch(webviewUrl, (url) => {
