@@ -3,13 +3,13 @@
     {
       "path": "pages/creation/creation",
       "style": {
-        "navigationBarTitleText": "试穿成图"
+        "navigationBarTitleText": "试衣"
       }
     },
     {
       "path": "pages/history/history",
       "style": {
-        "navigationBarTitleText": "创作历史"
+        "navigationBarTitleText": "记录"
       }
     },
     {
@@ -34,13 +34,13 @@
         "pagePath": "pages/creation/creation",
         "iconPath": "static/images/profile.jpg",
         "selectedIconPath": "static/images/profile.jpg",
-        "text": "试穿"
+        "text": "试衣"
       },
       {
         "pagePath": "pages/history/history",
         "iconPath": "static/images/profile.jpg",
         "selectedIconPath": "static/images/profile.jpg",
-        "text": "历史图"
+        "text": "记录"
       },
       {
         "pagePath": "pages/profile/profile",
