@@ -3,3 +3,8 @@ export interface UserInfo {
   avatarUrl: string;
   openid: string;
 };
+
+export enum FileType {
+  clothing = 'clothing',
+  person = 'person',
+};

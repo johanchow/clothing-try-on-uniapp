@@ -2,20 +2,20 @@ let ApiHost: string;
 let DiyImageUrl: string;
 // @ts-ignore
 if (process.env.NODE_ENV === 'development') {
-  ApiHost = 'http://localhost:5000';
-  DiyImageUrl = `http://localhost:5000/static/diy-image`;
-  // ApiHost = 'https://clothing-try-on-123543-7-1330028415.sh.run.tcloudbase.com';
-  // DiyImageUrl = 'https://clothing-try-on-123543-7-1330028415.sh.run.tcloudbase.com/static/diy-image';
+  console.log('接口环境111: development')
+  // ApiHost = 'http://localhost:5000';
+  // DiyImageUrl = `http://localhost:3000/diy-image`;
+  ApiHost = 'https://hewohua.com/clothing-try-on';
+  DiyImageUrl = 'https://hewohua.com/clothing-try-on/web-static/diy-image';
 } else {
-  ApiHost = 'https://clothing-try-on-123543-7-1330028415.sh.run.tcloudbase.com';
-  DiyImageUrl = 'https://clothing-try-on-123543-7-1330028415.sh.run.tcloudbase.com/static/diy-image';
+  console.log('接口环境: prod');
+  ApiHost = 'https://hewohua.com/clothing-try-on';
+  DiyImageUrl = 'https://hewohua.com/clothing-try-on/web-static/diy-image';
 }
-const ApiUploadImageUrl = `${ApiHost}/real-clothing/upload`;
 const ApiCreateImageUrl = `${ApiHost}/try-on/generate`;
 
 export {
   ApiHost,
   ApiCreateImageUrl,
-  ApiUploadImageUrl,
   DiyImageUrl,
 };;

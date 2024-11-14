@@ -12,21 +12,21 @@
     <view class="image-preview" v-if="previewImage">
       <image :src="previewImage.generation_image_url" mode="aspectFit" @click="onCancelPreviewImage" />
       <view class="button-group">
-        <button @click="startEditImage">编辑</button>
+        <button @click="startEditImage">修图</button>
         <button @click="() => { saveImage(previewImage!) }">保存</button>
       </view>
     </view>
     <view class="editing-overlay" v-if="isEditingImage">
       <web-view ref="webviewRef" :webview-styles="{progress: {color: '#FF3333'}}"
-        :src="webviewUrl" />
+        :src="webviewUrl"
         @load="sendConstToWebview"
-        @message="onMessage"
+        @message="onMessage"></web-view>
     </view>
   </view>
 </template>
 
 <script lang="ts">
-import { onHide, onShow } from '@dcloudio/uni-app';
+import { onHide, onShow, onLoad } from '@dcloudio/uni-app';
 import { requestTryonHistory } from '@/utils/request';
 import { computed, inject, ref, onBeforeMount, watch } from 'vue';
 import { DiyImageUrl } from '@/config';
@@ -51,11 +51,9 @@ export default {
     const previewImage = ref<ImageItem>();
     const isEditingImage = ref<boolean>(false);
     const webviewUrl = computed(() => {
-      console.log('webview computed previewImage.value: ', previewImage.value);
-      return `${DiyImageUrl}?generation_id=${previewImage.value?.id}`;
-    });
-
-    watch(webviewUrl, (url) => {
+      const webviewUrl = `${DiyImageUrl}?generation_id=${previewImage.value?.id}`;
+      console.log('webview url: ', webviewUrl);
+      return webviewUrl;
     });
 
     const fetchImages = async () => {
@@ -73,6 +71,10 @@ export default {
       }));
       console.log('groupImages: ', groupedImages.value);
     };
+
+    onLoad((e) => {
+      console.log('load: ', e);
+    });
 
     onHide(() => {
       console.log('onHide');
@@ -140,6 +142,7 @@ export default {
     };
 
     const onMessage = (event: any) => {
+      console.log('on message from webview');
       const data = event.detail?.data?.[0]; // 获取传递过来的数据
       console.log('get message from webview: ', data);
       if (data.action === 'close') {
