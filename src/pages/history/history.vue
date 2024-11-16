@@ -5,7 +5,11 @@
       <view class="image-list">
         <view v-for="(image, imgIndex) in group.images" :key="imgIndex" class="image-item">
           <image class="image" @click="() => { onPreviewImage(image) }" :src="image.generation_image_url" mode="aspectFit" />
-          <span class="image-missing" v-if="!image.generation_image_url">处理中</span>
+          <span class="image-missing" v-if="!image.generation_image_url && image.progress >= 100">失败</span>
+          <div class="image-processing" v-else-if="!image.generation_image_url && image.progress < 100">
+            <span class="image-missing">{{ image.progress + '%' }}</span>
+            <progress :percent="image.progress" stroke-width="6" backgroundColor="#D8D8D8" border-radius="6" />
+          </div>
         </view>
       </view>
     </view>
@@ -37,6 +41,8 @@ type ImageItem = {
   id: string; // 生成图generation的id
   date: string;
   generation_image_url: string;
+  progress: number;
+  create_time: string;
 }
 type ImageGroup = {
   date: string;
@@ -59,10 +65,14 @@ export default {
     const fetchImages = async () => {
       const historyData = await requestTryonHistory(userInfo.value.openid);
       const grouped: {[date in string]: ImageItem[]} = {};
-      historyData.forEach((image: any) => {
+      historyData.forEach((image: ImageItem) => {
         if (!grouped[image.date]) {
           grouped[image.date] = [];
         }
+        console.log('image: ', image);
+        // 预期是90s内完成，按时间算进度
+        const progress = Math.floor( 100 * (Date.now() - new Date(image.create_time).getTime()) / 1000 / 60 / 1.5 );
+        image.progress = progress >= 100 ? 100 : progress;
         grouped[image.date].push(image);
       });
       groupedImages.value = Object.entries(grouped).map(([date, images]) => ({
@@ -200,6 +210,20 @@ export default {
         transform: translate(-50%, -50%);
         color: #aaa;
         font-size: 28rpx;
+      }
+      .image-processing {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90%;
+        label {
+          position: relative;
+          display: inline-block;
+          width: 100%;
+          text-align: center;
+          top: 20rpx;
+        }
       }
     }
   }

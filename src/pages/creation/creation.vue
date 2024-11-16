@@ -3,9 +3,20 @@
     <!-- 上传图片组件 -->
     <view class="section">
       <text class="label">服装图</text>
-      <view class="upload-btn" @click="uploadClothing">
-        <text v-if="!clothingFile">点击上传图片</text>
-        <image class="preview-image" v-else :src="clothingFile" mode="aspectFit" />
+      <view class="upload-section">
+        <view class="upload-btn" @click="uploadClothing">
+          <text v-if="!clothingFile">点击上传图片</text>
+          <image class="preview-image" v-else :src="clothingFile" mode="aspectFit" />
+        </view>
+        <view class="upload-demo">
+          <text class="upload-demo-title">示例</text>
+          <view class="image-example">
+            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/23255574_53383833_1000.jpg" />
+            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/clo2.jpg" />
+            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/clo6.jpg" />
+            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/dress3rfasf23rf323535.jpg" />
+          </view>
+        </view>
       </view>
     </view>
 
@@ -25,9 +36,19 @@
 
     <view v-if="selectedPersonType === 'uploaded'" class="section">
       <text class="label">人物图</text>
-      <view class="upload-btn" @click="uploadPerson">
-        <text v-if="!personFile">点击上传图片</text>
-        <image class="preview-image" v-else :src="personFile" mode="aspectFit" />
+      <view class="upload-section">
+        <view class="upload-btn" @click="uploadPerson">
+          <text v-if="!personFile">点击上传图片</text>
+          <image class="preview-image" v-else :src="personFile" mode="aspectFit" />
+        </view>
+        <view class="upload-demo">
+          <text class="upload-demo-title">示例</text>
+          <view class="image-example">
+            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/23255574_53383833_1000.jpg" />
+            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/clo2.jpg" />
+            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/clo6.jpg" />
+          </view>
+        </view>
       </view>
     </view>
     <view v-else class="section">
@@ -289,29 +310,61 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .container {
   padding: 25rpx;
 }
 
+$demo-image-gap: 20rpx;
+
 .section {
   margin-bottom: 30rpx;
+  .upload-section {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    .upload-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 600rpx;
+      background-color: #fff;
+      border: 1rpx dashed #333;
+      color: #333;
+      font-size: 20rpx;
+      flex: 1;
+    }
+    .upload-demo {
+      margin-left: 20rpx;
+      width: 280rpx;
+      .upload-demo-title {
+        text-align: center;
+        display: inline-block;
+        width: 100%;
+        font-size: 14px;
+        font-weight: bold;
+        margin-bottom: $demo-image-gap;
+      }
+      .image-example {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-between;
+        row-gap: $demo-image-gap;
+        image {
+          width: 120rpx;
+          height: 180rpx;
+          border: 1px solid #d8d8d8;
+          border-radius: 4px;
+        }
+      }
+    }
+  }
 }
 
 .submit-section {
   margin-top: 75rpx;
-}
-
-.upload-btn {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 200rpx;
-  background-color: #fff;
-  border: 1rpx dashed #333;
-  color: #333;
-  font-size: 20rpx;
 }
 
 .preview-image {
