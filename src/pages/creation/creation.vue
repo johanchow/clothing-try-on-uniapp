@@ -44,9 +44,10 @@
         <view class="upload-demo">
           <text class="upload-demo-title">示例</text>
           <view class="image-example">
-            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/23255574_53383833_1000.jpg" />
-            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/clo2.jpg" />
-            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/clo6.jpg" />
+            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/presave_persons/female-junior-pure-3.webp" />
+            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/presave_persons/female-junior-pure-4.png" />
+            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/input_image.png" />
+            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/man23rfsaf3d.png" />
           </view>
         </view>
       </view>

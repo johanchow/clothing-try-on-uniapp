@@ -104,6 +104,9 @@ export default {
     });
 
     const onPreviewImage = (imageItem: ImageItem) => {
+      if (!imageItem.generation_image_url) {
+        return;
+      }
       console.log('preview image: ', imageItem);
       previewImage.value = imageItem;
     };
