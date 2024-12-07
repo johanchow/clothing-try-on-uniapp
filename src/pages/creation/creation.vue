@@ -13,17 +13,34 @@
           <view class="image-example">
             <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/23255574_53383833_1000.jpg" />
             <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/clo2.jpg" />
-            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/clo6.jpg" />
+            <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/presave_persons/trousers.jpg" />
             <image src="https://clothing-try-on-1306401232.cos.ap-guangzhou.myqcloud.com/dress3rfasf23rf323535.jpg" />
           </view>
         </view>
       </view>
     </view>
 
+    <view class="section" v-if="selectedClothingStubborn && clothingFile">
+      <text class="label">服装类型</text>
+      <radio-group @change="handleClothingCategoryChange">
+        <view class="radio-buttons">
+          <label class="radio" :class="{'checked': selectedClothingCategory === 'upper_body'}">
+            <radio value="upper_body" checked="true" />上衣
+          </label>
+          <label class="radio" :class="{'checked': selectedClothingCategory === 'lower_body'}">
+            <radio value="lower_body" />裤子
+          </label>
+          <label class="radio" :class="{'checked': selectedClothingCategory === 'dresses'}">
+            <radio value="dresses" />连衣裙
+          </label>
+        </view>
+      </radio-group>
+    </view>
+
     <view class="section">
       <text class="label">人物图类型</text>
       <radio-group @change="handlePersonTypeChange">
-        <view class="radio-buttons" :style="{ width: '400rpx'}">
+        <view class="radio-buttons">
           <label class="radio" :class="{'checked': selectedPersonType === 'uploaded'}">
             <radio value="uploaded" checked="true" />上传
           </label>
@@ -141,6 +158,9 @@ export default {
     const uploadClothingPromise = ref<Promise<string> | undefined>(undefined);
     const uploadPersonPromise = ref<Promise<string> | undefined>(undefined);
 
+    // 服务类型
+    const selectedClothingCategory = ref<string>('');
+    const selectedClothingStubborn = ref<boolean>(false);
     // 人物图类型
     const selectedPersonType = ref<string>('uploaded');
 
@@ -183,8 +203,30 @@ export default {
                 if (res.statusCode !== 200) {
                   return;
                 }
-                const { resource_id: fileId, message } = JSON.parse(res.data);
-                if (!fileId) {
+                const {
+                  code,
+                  message,
+                  resource_id: fileId,
+                  clothing_category: clothingCategory
+                } = JSON.parse(res.data);
+                if (code === 4000 || code === 5000) {
+                  uni.showModal({
+                    title: '提示',
+                    content: `${message}，是否要重新选择再上传?`,
+                    confirmText: '重新上传',
+                    cancelText: '继续',
+                    success: function (res) {
+                      if (res.confirm) {
+                        console.log('用户点击确定');
+                        fileRef.value = '';
+                      } else if (res.cancel) {
+                        selectedClothingStubborn.value = true;
+                        console.log('用户点击取消');
+                      }
+                    }
+                  });
+                  return;
+                } else if (!fileId) {
                   uni.showToast({
                     title: message,
                     icon: 'none'
@@ -192,6 +234,10 @@ export default {
                   return;
                 }
                 console.log('fileId: ', fileId);
+                if (clothingCategory) {
+                  selectedClothingStubborn.value = false;
+                  selectedClothingCategory.value = clothingCategory;
+                }
                 resolve(fileId);
                 // selectedFileId.value = JSON.parse(res.data).resource_id;
               }
@@ -213,6 +259,9 @@ export default {
       selectedPersonId.value = await promise;
     };
 
+    const handleClothingCategoryChange = (e: any) => {
+      selectedClothingCategory.value = e.detail.value;
+    };
     const handlePersonTypeChange = (e: any) => {
       selectedPersonType.value = e.detail.value;
     };
@@ -242,10 +291,18 @@ export default {
         });
         return;
       }
+      if (!selectedClothingCategory.value) {
+        uni.showToast({
+          title: '请确认图片中服装类型',
+          icon: 'none'
+        });
+        return;
+      }
       await uploadClothingPromise.value;
       const payload: Record<string, string> = {
         user_id: userInfo.value.openid,
         real_clothing_id: selectedClothingId.value,
+        clothing_category: selectedClothingCategory.value,
       };
       if (selectedPersonType.value === 'uploaded') {
         if (!selectedPersonId.value) {
@@ -298,6 +355,9 @@ export default {
       selectedAge,
       selectedBg,
       selectedStyle,
+      selectedClothingCategory,
+      selectedClothingStubborn,
+      handleClothingCategoryChange,
       handlePersonTypeChange,
       handleSexChange,
       handleAgeChange,
@@ -387,8 +447,11 @@ $demo-image-gap: 20rpx;
 
 .radio-buttons {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: 10px;
+  .radio {
+    width: 200rpx;
+  }
 }
 
 .radio-button {
