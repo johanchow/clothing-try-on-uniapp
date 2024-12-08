@@ -25,7 +25,7 @@
       <radio-group @change="handleClothingCategoryChange">
         <view class="radio-buttons">
           <label class="radio" :class="{'checked': selectedClothingCategory === 'upper_body'}">
-            <radio value="upper_body" checked="true" />上衣
+            <radio value="upper_body" />上衣
           </label>
           <label class="radio" :class="{'checked': selectedClothingCategory === 'lower_body'}">
             <radio value="lower_body" />裤子
@@ -137,7 +137,7 @@
 
     <!-- 提交按钮 -->
     <view class="section submit-section">
-      <button type="primary" @click="handleSubmit">提交</button>
+      <button type="button" @click="handleSubmit">提交</button>
     </view>
   </view>
 </template>
@@ -222,6 +222,7 @@ export default {
                       } else if (res.cancel) {
                         selectedClothingStubborn.value = true;
                         console.log('用户点击取消');
+                        resolve(fileId);
                       }
                     }
                   });
@@ -426,6 +427,10 @@ $demo-image-gap: 20rpx;
 
 .submit-section {
   margin-top: 75rpx;
+  button {
+    color: #fff;
+    background-color: #0062cc;
+  }
 }
 
 .preview-image {
